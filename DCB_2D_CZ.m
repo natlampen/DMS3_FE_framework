@@ -91,103 +91,36 @@ MPC(4).DOF = {'UY'};
 MPC(4).coef = 1;
 MPC(4).constant = load_d/2;
 
-% if enableGradDOF
-%     node1 = (n_elem_height+1);
-%     node2 = 2*(n_elem_height+1);
-%     node3 = 3*(n_elem_height+1);
-%    
-%     MPC(end+1) = cell2struct({[node1,node1,node1-1],{'GRADY','UX','UX'},[DCB_elem_size_height,1,-1],0},{'node','DOF','coef','constant'},2);
-%     MPC(end+1) = cell2struct({[node1,node1,node2,node3],{'GRADY','UY','UY','UY'},[DCB_elem_size_length,3/2,-2,1/2],0},{'node','DOF','coef','constant'},2);
-%     MPC(end+1) = cell2struct({[node1,node1,node2,node3],{'GRADX','UX','UX','UX'},[DCB_elem_size_length,3/2,-2,1/2],0},{'node','DOF','coef','constant'},2);
-%     
-%     node1 = (n_elem_height+1)*(n_elem_length+1) + 1;
-%     node2 = (n_elem_height+1)*(n_elem_length+1) + 1 + (n_elem_height+1);
-%     node3 = (n_elem_height+1)*(n_elem_length+1) + 1 + 2*(n_elem_height+1);
-%     
-%     MPC(end+1) = cell2struct({[node1,node1,node1+1],{'GRADY','UX','UX'},[DCB_elem_size_height,-1,1],0},{'node','DOF','coef','constant'},2);
-%     MPC(end+1) = cell2struct({[node1,node1,node2,node3],{'GRADY','UY','UY','UY'},[DCB_elem_size_length,3/2,-2,1/2],0},{'node','DOF','coef','constant'},2);
-%     MPC(end+1) = cell2struct({[node1,node1,node2,node3],{'GRADX','UX','UX','UX'},[DCB_elem_size_length,3/2,-2,1/2],0},{'node','DOF','coef','constant'},2);
-%     
-%     for ii = 2:(n_elem_length-DCB_a0/DCB_elem_size_length)
-%         node1 = (ii-1)*(n_elem_height+1);
-%         node2 = ii*(n_elem_height+1);
-%         node3 = (ii+1)*(n_elem_height+1);
-%         
-%         %%MPC(end+1) = cell2struct({[node2,node2,node2-1],{'GRADY','UX','UX'},[DCB_elem_size_height,1,-1],0},{'node','DOF','coef','constant'},2);
-%         MPC(end+1) = cell2struct({[node1,node2,node3],{'UY','GRADY','UY'},[1,2*DCB_elem_size_length,-1],0},{'node','DOF','coef','constant'},2);
-%         %%%MPC(end+1) = cell2struct({[node1,node2,node2,node3],{'UY','GRADY','UY','UY'},[-1/2,DCB_elem_size_length,-2,-1/6],0},{'node','DOF','coef','constant'},2);
-%         %%%MPC(end+1) = cell2struct({[node1,node1,node2,node3,node3],{'UY','GRADY','GRADY','GRADY','UY'},[3,DCB_elem_size_length,4*DCB_elem_size_length,DCB_elem_size_length,-3],0},{'node','DOF','coef','constant'},2);
-%         %%MPC(end+1) = cell2struct({[node1,node2,node3],{'GRADY','GRADY','GRADY'},[-1 2 -1],0},{'node','DOF','coef','constant'},2);
-%         MPC(end+1) = cell2struct({[node1,node2,node3],{'UX','GRADX','UX'},[1,2*DCB_elem_size_length,-1],0},{'node','DOF','coef','constant'},2);
-%         
-%         node1 = (n_elem_height+1)*(n_elem_length+1) + 1 + (ii-2)*(n_elem_height+1);
-%         node2 = (n_elem_height+1)*(n_elem_length+1) + 1 + (ii-1)*(n_elem_height+1);
-%         node3 = (n_elem_height+1)*(n_elem_length+1) + 1 + (ii)*(n_elem_height+1);
-%         
-%         %%MPC(end+1) = cell2struct({[node2,node2,node2+1],{'GRADY','UX','UX'},[DCB_elem_size_height,-1,1],0},{'node','DOF','coef','constant'},2);
-%         MPC(end+1) = cell2struct({[node1,node2,node3],{'UY','GRADY','UY'},[1,2*DCB_elem_size_length,-1],0},{'node','DOF','coef','constant'},2);
-%         %%%MPC(end+1) = cell2struct({[node1,node2,node2,node3],{'UY','GRADY','UY','UY'},[-1/2,DCB_elem_size_length,-2,-1/6],0},{'node','DOF','coef','constant'},2);
-%         %%%MPC(end+1) = cell2struct({[node1,node1,node2,node3,node3],{'UY','GRADY','GRADY','GRADY','UY'},[3,DCB_elem_size_length,4*DCB_elem_size_length,DCB_elem_size_length,-3],0},{'node','DOF','coef','constant'},2);
-%         %%MPC(end+1) = cell2struct({[node1,node2,node3],{'GRADY','GRADY','GRADY'},[-1 2 -1],0},{'node','DOF','coef','constant'},2);
-%         MPC(end+1) = cell2struct({[node1,node2,node3],{'UX','GRADX','UX'},[1,2*DCB_elem_size_length,-1],0},{'node','DOF','coef','constant'},2);
-%     end
-%     
-%     ii = n_elem_length-DCB_a0/DCB_elem_size_length+1;
-%     
-%     node1 = (ii-2)*(n_elem_height+1);
-%     node2 = (ii-1)*(n_elem_height+1);
-%     node3 = ii*(n_elem_height+1);
-%     
-%     MPC(end+1) = cell2struct({[node3,node3,node3-1],{'GRADY','UX','UX'},[DCB_elem_size_height,1,-1],0},{'node','DOF','coef','constant'},2);
-%     MPC(end+1) = cell2struct({[node1,node2,node3,node3],{'UY','UY','UY','GRADY'},[-1/2,2,-3/2,DCB_elem_size_length],0},{'node','DOF','coef','constant'},2);
-%     MPC(end+1) = cell2struct({[node1,node2,node3,node3],{'UX','UX','UX','GRADX'},[-1/2,2,-3/2,DCB_elem_size_length],0},{'node','DOF','coef','constant'},2);
-%     
-%     node1 = (n_elem_height+1)*(n_elem_length+1) + 1 + (ii-3)*(n_elem_height+1);
-%     node2 = (n_elem_height+1)*(n_elem_length+1) + 1 + (ii-2)*(n_elem_height+1);
-%     node3 = (n_elem_height+1)*(n_elem_length+1) + 1 + (ii-1)*(n_elem_height+1);
-%     
-%     MPC(end+1) = cell2struct({[node3,node3,node3+1],{'GRADY','UX','UX'},[DCB_elem_size_height,-1,1],0},{'node','DOF','coef','constant'},2);
-%     MPC(end+1) = cell2struct({[node1,node2,node3,node3],{'UY','UY','UY','GRADY'},[-1/2,2,-3/2,DCB_elem_size_length],0},{'node','DOF','coef','constant'},2);
-%     MPC(end+1) = cell2struct({[node1,node2,node3,node3],{'UX','UX','UX','GRADX'},[-1/2,2,-3/2,DCB_elem_size_length],0},{'node','DOF','coef','constant'},2);
-% end
-
+% If the model uses the MPC approach the MPCs should be added
 if enableGradDOF
     node1 = (n_elem_height+1);
     node2 = 2*(n_elem_height+1);
     node3 = 3*(n_elem_height+1);
    
-    MPC(end+1) = cell2struct({[node1,node1,node2,node3],{'GRADY','UY','UY','UY'},[DCB_elem_size_length,3/2,-2,1/2],0},{'node','DOF','coef','constant'},2);
-    MPC(end+1) = cell2struct({[node1,node1,node2,node3],{'GRADX','UX','UX','UX'},[DCB_elem_size_length,3/2,-2,1/2],0},{'node','DOF','coef','constant'},2);
-    MPC(end+1) = cell2struct({[node1,node2,node3],{'UY','GRADY','UY'},[1,2*DCB_elem_size_length,-1],0},{'node','DOF','coef','constant'},2);
-    MPC(end+1) = cell2struct({[node1,node2,node3],{'UX','GRADX','UX'},[1,2*DCB_elem_size_length,-1],0},{'node','DOF','coef','constant'},2);
+    MPC(end+1) = cell2struct({[node1,node1,node2,node3],{'GRADY','UY','UY','UY'},[2*DCB_elem_size_length,3,-4,1],0},{'node','DOF','coef','constant'},2);
+    MPC(end+1) = cell2struct({[node1,node1,node2,node3],{'GRADX','UX','UX','UX'},[2*DCB_elem_size_length,3,-4,1],0},{'node','DOF','coef','constant'},2);
     
     node1 = (n_elem_height+1)*(n_elem_length+1) + 1;
     node2 = (n_elem_height+1)*(n_elem_length+1) + 1 + (n_elem_height+1);
     node3 = (n_elem_height+1)*(n_elem_length+1) + 1 + 2*(n_elem_height+1);
     
-    MPC(end+1) = cell2struct({[node1,node1,node2,node3],{'GRADY','UY','UY','UY'},[DCB_elem_size_length,3/2,-2,1/2],0},{'node','DOF','coef','constant'},2);
-    MPC(end+1) = cell2struct({[node1,node1,node2,node3],{'GRADX','UX','UX','UX'},[DCB_elem_size_length,3/2,-2,1/2],0},{'node','DOF','coef','constant'},2);
-    MPC(end+1) = cell2struct({[node1,node2,node3],{'UY','GRADY','UY'},[1,2*DCB_elem_size_length,-1],0},{'node','DOF','coef','constant'},2);
-    MPC(end+1) = cell2struct({[node1,node2,node3],{'UX','GRADX','UX'},[1,2*DCB_elem_size_length,-1],0},{'node','DOF','coef','constant'},2);
+    MPC(end+1) = cell2struct({[node1,node1,node2,node3],{'GRADY','UY','UY','UY'},[2*DCB_elem_size_length,3,-4,1],0},{'node','DOF','coef','constant'},2);
+    MPC(end+1) = cell2struct({[node1,node1,node2,node3],{'GRADX','UX','UX','UX'},[2*DCB_elem_size_length,3,-4,1],0},{'node','DOF','coef','constant'},2);
     
-    for ii = 3:(n_elem_length-DCB_a0/DCB_elem_size_length-1)
-        node1 = (ii-2)*(n_elem_height+1);
-        node2 = (ii-1)*(n_elem_height+1);
-        node3 = ii*(n_elem_height+1);
-        node4 = (ii+1)*(n_elem_height+1);
-        node5 = (ii+2)*(n_elem_height+1);
+    for ii = 2:(n_elem_length-DCB_a0/DCB_elem_size_length)
+        node1 = (ii-1)*(n_elem_height+1);
+        node2 = ii*(n_elem_height+1);
+        node3 = (ii+1)*(n_elem_height+1);
         
-        MPC(end+1) = cell2struct({[node1,node2,node3,node4,node5],{'UY','UY','GRADY','UY','UY'},[-1,8,12*DCB_elem_size_length,-8,1],0},{'node','DOF','coef','constant'},2);
-        MPC(end+1) = cell2struct({[node2,node3,node4],{'UX','GRADX','UX'},[1,2*DCB_elem_size_length,-1],0},{'node','DOF','coef','constant'},2);
+        MPC(end+1) = cell2struct({[node1,node2,node3],{'UY','GRADY','UY'},[1,2*DCB_elem_size_length,-1],0},{'node','DOF','coef','constant'},2);
+        MPC(end+1) = cell2struct({[node1,node2,node3],{'UX','GRADX','UX'},[1,2*DCB_elem_size_length,-1],0},{'node','DOF','coef','constant'},2);
         
-        node1 = (n_elem_height+1)*(n_elem_length+1) + 1 + (ii-3)*(n_elem_height+1);
-        node2 = (n_elem_height+1)*(n_elem_length+1) + 1 + (ii-2)*(n_elem_height+1);
-        node3 = (n_elem_height+1)*(n_elem_length+1) + 1 + (ii-1)*(n_elem_height+1);
-        node4 = (n_elem_height+1)*(n_elem_length+1) + 1 + (ii)*(n_elem_height+1);
-        node5 = (n_elem_height+1)*(n_elem_length+1) + 1 + (ii+1)*(n_elem_height+1);
+        node1 = (n_elem_height+1)*(n_elem_length+1) + 1 + (ii-2)*(n_elem_height+1);
+        node2 = (n_elem_height+1)*(n_elem_length+1) + 1 + (ii-1)*(n_elem_height+1);
+        node3 = (n_elem_height+1)*(n_elem_length+1) + 1 + (ii)*(n_elem_height+1);
         
-        MPC(end+1) = cell2struct({[node1,node2,node3,node4,node5],{'UY','UY','GRADY','UY','UY'},[-1,8,12*DCB_elem_size_length,-8,1],0},{'node','DOF','coef','constant'},2);
-        MPC(end+1) = cell2struct({[node2,node3,node4],{'UX','GRADX','UX'},[1,2*DCB_elem_size_length,-1],0},{'node','DOF','coef','constant'},2);
+        MPC(end+1) = cell2struct({[node1,node2,node3],{'UY','GRADY','UY'},[1,2*DCB_elem_size_length,-1],0},{'node','DOF','coef','constant'},2);
+        MPC(end+1) = cell2struct({[node1,node2,node3],{'UX','GRADX','UX'},[1,2*DCB_elem_size_length,-1],0},{'node','DOF','coef','constant'},2);
     end
     
     ii = n_elem_length-DCB_a0/DCB_elem_size_length+1;
@@ -196,19 +129,15 @@ if enableGradDOF
     node2 = (ii-1)*(n_elem_height+1);
     node3 = ii*(n_elem_height+1);
     
-    MPC(end+1) = cell2struct({[node1,node2,node3,node3],{'UY','UY','UY','GRADY'},[-1/2,2,-3/2,DCB_elem_size_length],0},{'node','DOF','coef','constant'},2);
-    MPC(end+1) = cell2struct({[node1,node2,node3,node3],{'UX','UX','UX','GRADX'},[-1/2,2,-3/2,DCB_elem_size_length],0},{'node','DOF','coef','constant'},2);
-    MPC(end+1) = cell2struct({[node1,node2,node3],{'UY','GRADY','UY'},[1,2*DCB_elem_size_length,-1],0},{'node','DOF','coef','constant'},2);
-    MPC(end+1) = cell2struct({[node1,node2,node3],{'UX','GRADX','UX'},[1,2*DCB_elem_size_length,-1],0},{'node','DOF','coef','constant'},2);
+    MPC(end+1) = cell2struct({[node1,node2,node3,node3],{'UY','UY','UY','GRADY'},[-1,4,-3,2*DCB_elem_size_length],0},{'node','DOF','coef','constant'},2);
+    MPC(end+1) = cell2struct({[node1,node2,node3,node3],{'UX','UX','UX','GRADX'},[-1,4,-3,2*DCB_elem_size_length],0},{'node','DOF','coef','constant'},2);
     
     node1 = (n_elem_height+1)*(n_elem_length+1) + 1 + (ii-3)*(n_elem_height+1);
     node2 = (n_elem_height+1)*(n_elem_length+1) + 1 + (ii-2)*(n_elem_height+1);
     node3 = (n_elem_height+1)*(n_elem_length+1) + 1 + (ii-1)*(n_elem_height+1);
     
-    MPC(end+1) = cell2struct({[node1,node2,node3,node3],{'UY','UY','UY','GRADY'},[-1/2,2,-3/2,DCB_elem_size_length],0},{'node','DOF','coef','constant'},2);
-    MPC(end+1) = cell2struct({[node1,node2,node3,node3],{'UX','UX','UX','GRADX'},[-1/2,2,-3/2,DCB_elem_size_length],0},{'node','DOF','coef','constant'},2);
-    MPC(end+1) = cell2struct({[node1,node2,node3],{'UY','GRADY','UY'},[1,2*DCB_elem_size_length,-1],0},{'node','DOF','coef','constant'},2);
-    MPC(end+1) = cell2struct({[node1,node2,node3],{'UX','GRADX','UX'},[1,2*DCB_elem_size_length,-1],0},{'node','DOF','coef','constant'},2);
+    MPC(end+1) = cell2struct({[node1,node2,node3,node3],{'UY','UY','UY','GRADY'},[-1,4,-3,2*DCB_elem_size_length],0},{'node','DOF','coef','constant'},2);
+    MPC(end+1) = cell2struct({[node1,node2,node3,node3],{'UX','UX','UX','GRADX'},[-1,4,-3,2*DCB_elem_size_length],0},{'node','DOF','coef','constant'},2);
 end
 
 saved = struct('node',{},'DOF',{});

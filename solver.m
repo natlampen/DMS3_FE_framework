@@ -139,27 +139,27 @@ for iter = 1:solver.max_iter
     % Check tolerance of the current solution
     if norm([R; Q]) < solver.tol % The substep has converged
         fprintf('Time %f has converged in %d iteration(s)\n', time, substep_iter);
-        history(:,substep+1) = step_history; % Substep has converged - Update history
-        
+
+        % Automatic load stepping - Increase step if <= 4
         if substep_iter <= 4
             stepsize = min([stepsize*2, solver.max_stepsize]);
         end
-        substep_iter = 0;
         
+        % Save load step data
+        history(:,substep+1) = step_history; % Substep has converged - Update history
         Dsave(:,substep+1) = D;
-        
         lambda0 = lambda;
-        
         if exist('saved','var')
             saved_time(substep) = time;
             saved_forces(:,substep) = R_in(saved_index);
             saved_displacements(:,substep) = D(saved_index);
         end
         
+        
         if time == 1
             fprintf('Solution done\n');
             history = history(:,2:substep+1); % History is offset by 1 to include timestep 0;
-            Dsave = Dsave(:,2:substep+1);
+            Dsave = Dsave(:,2:substep+1); % Dsave is offset by 1 to include timestep 0;
             saved_time = saved_time(1:substep);
             saved_forces = saved_forces(1:substep);
             saved_displacements = saved_displacements(1:substep);
@@ -170,6 +170,8 @@ for iter = 1:solver.max_iter
         else
             time = time + stepsize;
         end
+        
+        substep_iter = 0;
         substep = substep + 1;
     end
     
