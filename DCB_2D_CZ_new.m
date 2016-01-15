@@ -1,4 +1,4 @@
-function [node, elem, saved, forces, MPC, elementSelections] = DCB_2D_CZ(geometry, load_d, enableGradDOF)
+function [node, elem, saved, forces, MPC, elementSelections] = DCB_2D_CZ_new(geometry, load_d, enableGradDOF)
 % Analysis parameters
 % Geometric parameters
 DCB_height = geometry.DCB_height;
@@ -97,15 +97,15 @@ if enableGradDOF
     node2 = 2*(n_elem_height+1);
     node3 = 3*(n_elem_height+1);
    
-    MPC(end+1) = cell2struct({[node1,node2,node3,node3],{'UY','UY','UY','GRADY'},[-1,4,-3,2*DCB_elem_size_length],0},{'node','DOF','coef','constant'},2);
-    MPC(end+1) = cell2struct({[node1,node2,node3,node3],{'UX','UX','UX','GRADX'},[-1,4,-3,2*DCB_elem_size_length],0},{'node','DOF','coef','constant'},2);
+    MPC(end+1) = cell2struct({[node1,node1,node2,node3],{'GRADY','UY','UY','UY'},[2*DCB_elem_size_length,3,-4,1],0},{'node','DOF','coef','constant'},2);
+    MPC(end+1) = cell2struct({[node1,node1,node2,node3],{'GRADX','UX','UX','UX'},[2*DCB_elem_size_length,3,-4,1],0},{'node','DOF','coef','constant'},2);
     
     node1 = (n_elem_height+1)*(n_elem_length+1) + 1;
     node2 = (n_elem_height+1)*(n_elem_length+1) + 1 + (n_elem_height+1);
     node3 = (n_elem_height+1)*(n_elem_length+1) + 1 + 2*(n_elem_height+1);
     
-    MPC(end+1) = cell2struct({[node1,node2,node3,node3],{'UY','UY','UY','GRADY'},[-1,4,-3,2*DCB_elem_size_length],0},{'node','DOF','coef','constant'},2);
-    MPC(end+1) = cell2struct({[node1,node2,node3,node3],{'UX','UX','UX','GRADX'},[-1,4,-3,2*DCB_elem_size_length],0},{'node','DOF','coef','constant'},2);
+    MPC(end+1) = cell2struct({[node1,node1,node2,node3],{'GRADY','UY','UY','UY'},[2*DCB_elem_size_length,3,-4,1],0},{'node','DOF','coef','constant'},2);
+    MPC(end+1) = cell2struct({[node1,node1,node2,node3],{'GRADX','UX','UX','UX'},[2*DCB_elem_size_length,3,-4,1],0},{'node','DOF','coef','constant'},2);
     
     for ii = 2:(n_elem_length-DCB_a0/DCB_elem_size_length)
         node1 = (ii-1)*(n_elem_height+1);
